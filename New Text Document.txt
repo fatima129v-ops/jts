@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JTS Team</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* إعدادات الخطوط والخلفية العامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #e6f4fc 0%, #bcdcf5 100%); /* ألوان مستوحاة من اللوجو */
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* تأثير اللوجو في الخلفية العامة بناءً على اسم ملفك الجديد Untitled.jpg */
+        .background-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-image: url('Untitled.jpg'); /* تم التعديل لاسم ملفك الحالي */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.12; 
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* الكارت الرئيسي للموقع (تأثير الزجاج الاحترافي Glassmorphism) */
+        .main-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* اللوجو الأصلي ظاهر بوضوح أعلى الصفحة مع حركة عائمة */
+        .team-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        header h1 {
+            color: #1e5474; /* أزرق غامق متناسق مع كلمة JTS */
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #537a93;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        /* تقسيم الأزرار لشبكة متناسقة (زرين في كل سطر) */
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* التصميم الموحد والراقي للأزرار */
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 14px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* أزرار المواد بالإنجليزية */
+        .btn-eng {
+            background: linear-gradient(135deg, #2b7da7, #175273);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* أزرار المواد بالعربية */
+        .btn-ara {
+            background: linear-gradient(135deg, #ffffff, #f0f7fc);
+            color: #175273;
+            border: 2px solid #2b7da7;
+        }
+
+        /* قسم زر تواصل معنا */
+        .footer-section {
+            margin-top: 25px;
+            border-top: 1px solid rgba(23, 82, 115, 0.15);
+            padding-top: 25px;
+        }
+
+        /* زر تواصل معنا باللون الذهبي الملكي للتاج الموجود باللوجو */
+        .btn-contact {
+            background: linear-gradient(135deg, #dca842, #b08125); 
+            color: white;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        /* تأثيرات الـ Hover الممتعة عند تمرير الماوس */
+        .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-eng:hover {
+            background: linear-gradient(135deg, #3795c7, #1e648c);
+        }
+
+        .btn-ara:hover {
+            background: #2b7da7;
+            color: #ffffff;
+        }
+
+        .btn-contact:hover {
+            background: linear-gradient(135deg, #e9b653, #c59333);
+        }
+
+        /* حركة الأنيميشن عند فتح الموقع */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* حركة عائمة للوجو */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* جعل الموقع متوافق تماماً وممتاز على شاشات الموبايل */
+        @media (max-width: 480px) {
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+            .main-container {
+                padding: 25px 15px;
+            }
+            header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-overlay"></div>
+
+    <div class="main-container">
+        
+        <img src="Untitled.jpg" alt="JTS Team Logo" class="team-logo">
+
+        <header>
+            <h1>مرحباً بك في رحلة النجاح لـ STEM 🚀</h1>
+            <p>اختر المادة التي تريد البدء في مذاكرتها الآن</p>
+        </header>
+
+        <div class="button-group" dir="ltr">
+            <a href="#" class="btn btn-eng">English</a>
+            <a href="#" class="btn btn-eng">Math</a>
+            <a href="#" class="btn btn-eng">Science</a>
+            <a href="#" class="btn btn-eng">IQ</a>
+        </div>
+
+        <div class="button-group">
+            <a href="#" class="btn btn-ara">رياضيات</a>
+            <a href="#" class="btn btn-ara">علوم</a>
+        </div>
+
+        <footer class="footer-section">
+            <a href="#" class="btn btn-contact">تواصل معنا</a>
+        </footer>
+    </div>
+
+</body>
+</html>
