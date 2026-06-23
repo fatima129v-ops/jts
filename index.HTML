@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> JTS Team</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* إعدادات عامة */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', 'Poppins', sans-serif; }
+        body { min-height: 100vh; display: flex; justify-content: center; align-items: center; background-color: #e2f1fa; padding: 20px; }
+
+        /* المربع الرئيسي (الكارت) للرئيسية - تم ضبط مسار الخلفية وحجمها */
+        .main-container {
+            position: relative;
+            background-image: url('Untitled.jpg'); /* لوجو التيم المكتشف في مجلدك */
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            border-radius: 28px; padding: 50px 40px; width: 100%; max-width: 580px; text-align: center;
+            box-shadow: 0 20px 50px rgba(23, 82, 115, 0.15); animation: fadeIn 0.6s ease-in-out;
+            overflow: hidden; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* تعديل حجم المربع ليكون 75% أبيض فارغ عند فتح الماتيريالز والتواصل */
+        .main-container.wide-mode { max-width: 97%; background-image: none !important; background-color: #ffffff !important; padding: 40px 30px; }
+        .main-container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.35); backdrop-filter: blur(1px); z-index: 1; }
+        .main-container.wide-mode::before { display: none; }
+        .content-wrapper { position: relative; z-index: 2; width: 100%; }
+
+        header h1 { color: #175273; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+        header p { color: #1e3a4e; font-size: 1rem; margin-bottom: 35px; font-weight: 700; }
+
+        /* تقسيم الأزرار */
+        .button-group { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .btn { display: inline-flex; justify-content: center; align-items: center; padding: 14px 20px; font-size: 1.1rem; font-weight: 600; border-radius: 14px; cursor: pointer; transition: all 0.3s; border: none; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+        .btn-eng { background: linear-gradient(135deg, #2b7da7, #175273); color: #ffffff; font-family: 'Poppins', sans-serif; }
+        .btn-ara { background: linear-gradient(135deg, #ffffff, #f4f9fc); color: #175273; border: 2px solid #2b7da7; }
+        .footer-section { margin-top: 25px; border-top: 2px dashed rgba(23, 82, 115, 0.3); padding-top: 25px; }
+        .btn-contact { background: linear-gradient(135deg, #dca842, #b08125); color: white; width: 100%; font-size: 1.1rem; }
+        .btn:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); }
+
+        /* واجهة المواد المودرن */
+        .materials-view { display: none; text-align: right; animation: fadeIn 0.5s ease-in-out; width: 100%; }
+        .materials-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 2px solid #e2f1fa; padding-bottom: 15px; }
+        .materials-header h2 { color: #175273; font-size: 1.6rem; }
+        .back-btn { background: #175273; color: white; padding: 8px 18px; border-radius: 8px; font-size: 0.95rem; border: none; cursor: pointer; transition: 0.3s; }
+        .back-btn:hover { background: #2b7da7; }
+
+        /* شبكة كروت الملفات الاحترافية */
+        .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; width: 100%; min-height: 300px; }
+        
+        .file-card {
+            background: #f8fbfd; border: 1px solid #d0e7f5; border-radius: 16px; padding: 20px;
+            display: flex; align-items: center; gap: 12px; transition: 0.3s; text-align: right;
+        }
+        .file-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(23, 82, 115, 0.08); border-color: #2b7da7; }
+        
+        .file-icon { width: 50px; height: 50px; background: #e2f1fa; border-radius: 12px; display: flex; justify-content: center; align-items: center; color: #175273; font-size: 1.5rem; }
+        .file-info { flex: 1; overflow: hidden; }
+        .file-info h3 { color: #175273; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
+        
+        /* أزرار التحكم بالملف (المعاينة والتحميل) */
+        .actions-group { display: flex; gap: 8px; }
+        .preview-icon-btn, .download-icon-btn { width: 36px; height: 36px; color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; text-decoration: none; border: none; }
+        .preview-icon-btn { background: #2b7da7; }
+        .preview-icon-btn:hover { background: #dca842; transform: scale(1.1); }
+        .download-icon-btn { background: #175273; }
+        .download-icon-btn:hover { background: #2b7da7; transform: scale(1.1); }
+
+        .loading, .empty-msg { grid-column: 1 / -1; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 250px; color: #537a93; font-size: 1.1rem; gap: 15px; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #e2f1fa; border-top-color: #2b7da7; border-radius: 50%; animation: spin 1s linear infinite; }
+
+        /* كارت تواصل معنا المطور وشبكة أرقام الواتساب - متجاوب 100% */
+        .contact-card { background: #f4fafd; border: 2px dashed #dca842; border-radius: 16px; padding: 30px; text-align: center; width: 100%; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; margin-top: 25px; width: 100%; }
+        .whatsapp-link { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
+            background: #25d366; color: white; text-decoration: none; padding: 12px 20px; 
+            border-radius: 12px; font-size: 1.1rem; font-weight: bold; transition: 0.3s; 
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); 
+        }
+        .whatsapp-link:hover { background: #20ba59; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); }
+
+        /* نظام النافذة المنبثقة (Modal) بـ 95% */
+        .preview-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(23, 82, 115, 0.6); backdrop-filter: blur(4px);
+            z-index: 9999; justify-content: center; align-items: center; padding: 10px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .modal-content {
+            background: #ffffff; border-radius: 20px; 
+            width: 95%; height: 92vh; 
+            display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-header {
+            background: #f4fafd; padding: 15px 25px; border-bottom: 1px solid #d0e7f5;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-header h3 { color: #175273; font-size: 1.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%; }
+        
+        .close-modal-btn {
+            background: #d9534f; color: white; border: none; width: 35px; height: 35px;
+            border-radius: 50%; font-size: 1rem; cursor: pointer; display: flex;
+            justify-content: center; align-items: center; transition: 0.3s;
+        }
+        .close-modal-btn:hover { background: #c9302c; transform: rotate(90deg); }
+
+        .modal-body { flex: 1; background: #f0f4f8; position: relative; }
+        .preview-iframe { width: 100%; height: 100%; border: none; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 768px) { .main-container.wide-mode { max-width: 95%; padding: 20px 15px; } .button-group { grid-template-columns: 1fr; } .modal-content { width: 95%; height: 92vh; } }
+    </style>
+</head>
+<body>
+
+    <div id="mainCard" class="main-container">
+        <div class="content-wrapper">
+            
+            <div id="homeView">
+                <header>
+                    <h1></h1>
+                    <p>اختر المادة</p>
+                </header>
+                <div class="button-group" dir="ltr">
+                    <button class="btn btn-eng" onclick="showSubject('English')">English</button>
+                    <button class="btn btn-eng" onclick="showSubject('Math')">Math</button>
+                    <button class="btn btn-eng" onclick="showSubject('Science')">Science</button>
+                    <button class="btn btn-eng" onclick="showSubject('IQ')">IQ</button>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-ara" onclick="showSubject('رياضيات')">رياضيات</button>
+                    <button class="btn btn-ara" onclick="showSubject('علوم')">علوم</button>
+                </div>
+                <footer class="footer-section">
+                    <button class="btn btn-contact" onclick="showSubject('تواصل معنا')">تواصل معنا</button>
+                </footer>
+            </div>
+
+            <div id="materialsView" class="materials-view">
+                <div class="materials-header">
+                    <h2 id="subjectTitle">اسم المادة</h2>
+                    <button class="back-btn" onclick="showHome()">← رجوع للرئيسية</button>
+                </div>
+                <div id="dynamicContainer"></div>
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="previewModal" class="preview-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalFileTitle">معاينة الملف</h3>
+                <button class="close-modal-btn" onclick="closePreview()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <iframe id="previewIframe" class="preview-iframe" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('mainCard');
+        const homeView = document.getElementById('homeView');
+        const materialsView = document.getElementById('materialsView');
+        const subjectTitle = document.getElementById('subjectTitle');
+        const dynamicContainer = document.getElementById('dynamicContainer');
+        
+        const previewModal = document.getElementById('previewModal');
+        const previewIframe = document.getElementById('previewIframe');
+        const modalFileTitle = document.getElementById('modalFileTitle');
+
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHlZJeAjoeH0VL004mdqD_soGgW9fLAV1Turqe7SqgmYWTlc3e6eT8bGQRj8oEuFbmDg/exec";
+
+        const folderIds = {
+            'English': '1lVRJ_KzvAQqNpPvb0bjsJ_Vory_1C6C0',
+            'Math': '1Zo2Ek8JBUlSpkJdPs22tlT5SxcQvENDt',
+            'Science': '1f8LKXaAL9BAVWYQqS5PMwah3UEGPS_dC',
+            'IQ': '1l0GH9enLWPLQo-K-YnrRMKGQa8VZQ3Zl',
+            'رياضيات': '1kPRHORbKlWAAL3_ZKbORQJ6URbswveUu',
+            'علوم': '1wd7TObq2LdC2_PY_BkYtznMQq6ZwZxEU'
+        };
+
+        function showSubject(subjectName) {
+            homeView.style.display = 'none';
+            card.classList.add('wide-mode');
+            materialsView.style.display = 'block';
+            
+            if (subjectName === 'تواصل معنا') {
+                subjectTitle.innerText = `تواصل معنا 📞`;
+                dynamicContainer.innerHTML = `
+                    <div class="contact-card">
+                        <h3>يسعدنا تواصلك معنا للإجابة على أي استفسار</h3>
+                        <p style="color: #537a93; margin-bottom: 15px; font-weight: 600;">اختر أي رقم من فريق الدعم الفني للتحدث معه مباشرة عبر واتساب:</p>
+                        
+                        <div class="contact-grid" dir="ltr">
+                            <a href="https://wa.me/201507898919" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01507898919</a>
+                            <a href="https://wa.me/201221744104" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01221744104</a>
+                            <a href="https://wa.me/201080777921" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01080777921</a>
+                            <a href="https://wa.me/201001855379" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01001855379</a>
+                            <a href="https://wa.me/201069217437" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01069217437</a>
+                            <a href="https://wa.me/201100507112" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01100507112</a>
+                            <a href="https://wa.me/201012504292" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01012504292</a>
+                            <a href="https://wa.me/201557375625" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01557375625</a>
+                            <a href="https://wa.me/201034728601" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01034728601</a>
+                            <a href="https://wa.me/201080437429" target="_blank" class="whatsapp-link"><i class="fa-brands fa-whatsapp"></i> 01080437429</a>
+                        </div>
+                    </div>`;
+                return;
+            }
+
+            subjectTitle.innerText = `قسم الـ ${subjectName} 📚`;
+            dynamicContainer.innerHTML = `<div class="loading"><div class="spinner"></div><p>جاري تحميل أحدث الملفات المرفوعة...</p></div>`;
+
+            const folderId = folderIds[subjectName];
+            
+            fetch(`${SCRIPT_URL}?folderId=${folderId}`, { method: 'GET', redirect: 'follow' })
+                .then(res => res.json())
+                .then(files => {
+                    if(!files || files.length === 0) {
+                        dynamicContainer.innerHTML = `<div class="empty-msg"><i class="fa-regular fa-folder-open" style="font-size:3rem; color:#b0cce0;"></i><p>لم يتم رفع أي ملفات في هذا القسم بعد.</p></div>`;
+                        return;
+                    }
+                    
+                    let gridHtml = `<div class="files-grid">`;
+                    files.forEach(file => {
+                        let icon = 'fa-file-pdf'; 
+                        let nameLower = file.name.toLowerCase();
+                        if(nameLower.match(/\.(jpeg|jpg|png|gif)$/)) icon = 'fa-file-image';
+                        if(nameLower.match(/\.(doc|docx)$/)) icon = 'fa-file-word';
+                        if(nameLower.match(/\.(mp4|mkv|avi)$/)) icon = 'fa-file-video';
+
+                        let embedLink = file.url.replace('/view', '/preview');
+
+                        // [تم الإصلاح الفوري لهنا] إعادة بناء وتجميع السطر البرمجي المكسور ليعمل الرابط بنجاح بنسبة 100%
+                        let downloadLink = file.url;
+                        const match = file.url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                        if (match && match[1]) {
+                            downloadLink = `https://docs.google.com/uc?export=download&id=${match[1]}`;
+                        }
+
+                        gridHtml += `
+                            <div class="file-card">
+                                <div class="file-icon"><i class="fa-solid ${icon}"></i></div>
+                                <div class="file-info">
+                                    <h3 title="${file.name}">${file.name}</h3>
+                                </div>
+                                <div class="actions-group">
+                                    <div class="preview-icon-btn" onclick="openPreview('${embedLink}', '${file.name.replace(/'/g, "\\'")}')" title="معاينة داخل الموقع">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </div>
+                                    <a href="${downloadLink}" download class="download-icon-btn" title="تحميل الملف مباشرة">
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+                                </div>
+                            </div>`;
+                    });
+                    gridHtml += `</div>`;
+                    dynamicContainer.innerHTML = gridHtml;
+                })
+                .catch(() => {
+                    dynamicContainer.innerHTML = `<div class="empty-msg"><p style="color:#d9534f;">حدث خطأ أثناء جلب الملفات. تأكدي من ضبط صلاحيات المجلدات في جوجل درايف إلى "عام للجميع".</p></div>`;
+                });
+        }
+
+        function openPreview(url, title) {
+            modalFileTitle.innerText = `👁️ معاينة: ${title}`;
+            previewIframe.src = url;
+            previewModal.style.display = 'flex';
+        }
+
+        function closePreview() {
+            previewModal.style.display = 'none';
+            previewIframe.src = ""; 
+        }
+
+        function showHome() { materialsView.style.display = 'none'; card.classList.remove('wide-mode'); homeView.style.display = 'block'; }
+    </script>
+</body>
+</html>
